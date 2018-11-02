@@ -99,7 +99,7 @@ alias sls="ls"
 alias ls="exa"
 
 function huilog () {
-    LAST_LOG=$(exa -rs modified data/logs | head -n 1)
+    LAST_LOG=$(exa -rs modified data/logs | grep -v 'story' | head -n 1)
     echo $LAST_LOG
     less data/logs/${LAST_LOG}
 }
