@@ -1,16 +1,13 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Path to powerline-status installation
-export POWERLINE_REPOSITORY_ROOT=$(/usr/bin/python -c 'import powerline, os; print(os.path.dirname(powerline.__file__))')
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(virtualenv context_joined dir rbenv vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(virtualenv context dir vcs)
 POWERLEVEL9K_VIRTUALENV_BACKGROUND='black'
 POWERLEVEL9K_VIRTUALENV_FOREGROUND='037'
 
@@ -56,7 +53,7 @@ POWERLEVEL9K_VIRTUALENV_FOREGROUND='037'
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git navi zoxide)
 
 # User configuration
 
@@ -94,8 +91,7 @@ export EDITOR='vim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias sls="ls"
-
+alias sls="/bin/ls"
 alias ls="exa"
 
 function huilog () {
@@ -104,13 +100,10 @@ function huilog () {
     less data/logs/${LAST_LOG}
 }
 
-# Powerline Daemon
-powerline-daemon -q
-source "$POWERLINE_REPOSITORY_ROOT/bindings/zsh/powerline.zsh"
-
 # OS-specific environments
-SOURCE_DIR=`dirname $0`
 if uname -a | grep -q '^Linux.*Microsoft'; then
     # WSL
     . ~/.dotfiles/wsl/init.sh
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
