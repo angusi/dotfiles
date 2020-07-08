@@ -101,7 +101,7 @@ function huilog () {
 }
 
 # OS-specific environments
-if uname -a | grep -q '^Linux.*Microsoft'; then
+if uname -a | grep -q '^Linux.*[Mm]icrosoft' ; then
     # WSL
     . ~/.dotfiles/wsl/init.sh
 fi
