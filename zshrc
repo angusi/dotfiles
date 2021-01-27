@@ -107,3 +107,5 @@ if uname -a | grep -q '^Linux.*[Mm]icrosoft' ; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[ -f /etc/bash_completion.d/azure-cli ] && source /etc/bash_completion.d/azure-cli
