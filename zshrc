@@ -53,7 +53,8 @@ POWERLEVEL9K_VIRTUALENV_FOREGROUND='037'
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git httpie navi zoxide)
+eval "$(navi widget zsh)"
+plugins=(git httpie zoxide)
 
 # User configuration
 

@@ -2,3 +2,4 @@
 . ~/.dotfiles/wsl/alias.sh
 . ~/.dotfiles/wsl/ssh-agent.sh
 . ~/.dotfiles/wsl/path.sh
+. ~/.dotfiles/wsl/gpg.sh

@@ -1,4 +1,4 @@
-if [[ "$(hostname -s)" == "PC5"* ]]; then
+if [[ "$(hostname -s)" == "PC5"* || "$(hostname -s)" == "DESKTOP-"* ]]; then
 #    export DOCKER_TLS_VERIFY=""
 #    export DOCKER_HOST="tcp://0.0.0.0:2375"
     #export DOCKER_CERT_PATH="/mnt/c/Users/aai/.docker/machine/machines/default"
