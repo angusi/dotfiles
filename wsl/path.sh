@@ -1,1 +1,1 @@
-export PATH=$HOME/.poetry/bin:$PATH:~/.local/bin
+export PATH=$PATH:~/.local/bin:~/.usr/bin
