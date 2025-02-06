@@ -1,8 +1,4 @@
-if [[ "$(hostname -s)" == "PC5"* || "$(hostname -s)" == "DESKTOP-"* ]]; then
-#    export DOCKER_TLS_VERIFY=""
-#    export DOCKER_HOST="tcp://0.0.0.0:2375"
-    #export DOCKER_CERT_PATH="/mnt/c/Users/aai/.docker/machine/machines/default"
-    #export DOCKER_MACHINE_NAME="default"
-    #export COMPOSE_CONVERT_WINDOWS_PATHS="true"
+HOSTNAME="$(hostname -s)"
+if [[ "$HOSTNAME" == "PC5"* || "$HOSTNAME" == "DESKTOP-"* || "$HOSTNAME" == "beinn"* ]]; then
     sudo service docker start
 fi
