@@ -92,8 +92,6 @@ export EDITOR='vim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias sls="/bin/ls"
-alias ls="exa"
 
 function huilog () {
     LAST_LOG=$(exa -rs modified data/logs | grep -v 'story' | head -n 1)
@@ -107,7 +105,11 @@ if uname -a | grep -q '^Linux.*[Mm]icrosoft' ; then
     . ~/.dotfiles/wsl/init.sh
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ -f ~/.fzf.zsh ]; then
+    source ~/.fzf.zsh
+else
+    printf "\033[1;33mWARNING:\033[0;33m fzf isn't install (or configured)\033[0m\n"
+fi
 
 [ -f /etc/bash_completion.d/azure-cli ] && source /etc/bash_completion.d/azure-cli
 

@@ -3,4 +3,5 @@
 . ~/.dotfiles/wsl/ssh-agent.sh
 . ~/.dotfiles/wsl/path.sh
 . ~/.dotfiles/wsl/gpg.sh
+. ~/.dotfiles/wsl/auth.sh
 . ~/.dotfiles/wsl/pyenv.sh
