@@ -14,7 +14,7 @@ load_encrypted_password() {
 
     # Check if encrypted file exists
     if [[ ! -f "$encrypted_file" ]]; then
-        echo "Error: Encrypted file '$encrypted_file' not found"
+        _dotfiles_log_error "Encrypted file ${encrypted_file} not found"
         return 1
     fi
 
@@ -25,10 +25,10 @@ load_encrypted_password() {
     if [[ $? -eq 0 && -n "$decrypted_value" ]]; then
         # Use zsh parameter expansion to set the environment variable dynamically
         export ${env_var_name}="$decrypted_value"
-	printf "\033[1;32mINFO:   \033[0;32m Successfully loaded ${env_var_name} from ${encrypted_file}.\033[0m\n"
+        _dotfiles_log_info "Successfully loaded ${env_var_name} from ${encrypted_file}."
         return 0
     else
-        printf "\033[1;31mERROR:  \033[0;31m Failed to decrypt ${encrypted_file} (or file is empty).\033[0m\n"
+        _dotfiles_log_error "Failed to decrypt ${encrypted_file} (or file is empty)."
         return 1
     fi
 }
@@ -50,7 +50,7 @@ APT_PROXY_SCRIPT="$HOME/bin/apt-auth-proxy.py"
 start_apt_proxy() {
     # Check if proxy is already running
     if [[ -n "$APT_PROXY_PID" ]] && kill -0 "$APT_PROXY_PID" 2>/dev/null; then
-        printf "\033[1;32mINFO:   \033[0;32m apt proxy already running on port ${APT_PROXY_PORT} (PID ${APT_PROXY_PID}.\033[0m\n"
+        _dotfiles_log_info "apt proxy already running on port ${APT_PROXY_PORT} (PID ${APT_PROXY_PID}."
         return 0
     fi
 
@@ -66,13 +66,13 @@ start_apt_proxy() {
 
     # Check if it's running
     if kill -0 "$APT_PROXY_PID" 2>/dev/null; then
-        printf "\033[1;32mINFO:   \033[0;32m apt proxy started on port ${APT_PROXY_PORT} (PID ${APT_PROXY_PID}.\033[0m\n"
+        _dotfiles_log_info "apt proxy started on port ${APT_PROXY_PORT} (PID ${APT_PROXY_PID}."
 
         # Configure apt to use the proxy
         configure_apt_proxy
         return 0
     else
-        printf "\033[1;31mERROR:  \033[0;31m Failed to start apt proxy on port ${APT_PROXY_PORT}.\033[0m\n"
+        _dotfiles_log_info "Failed to start apt proxy on port ${APT_PROXY_PORT}."
         APT_PROXY_PID=""
         APT_PROXY_PORT=""
         return 1
@@ -83,7 +83,7 @@ start_apt_proxy() {
 stop_apt_proxy() {
     if [[ -n "$APT_PROXY_PID" ]] && kill -0 "$APT_PROXY_PID" 2>/dev/null; then
         kill "$APT_PROXY_PID"
-        printf "\033[1;32mINFO:   \033[0;32m apt proxy stopped (PID ${APT_PROXY_PID}.\033[0m\n"
+        _dotfiles_log_info "apt proxy stopped (PID ${APT_PROXY_PID}."
     fi
 
     # Remove apt proxy configuration
@@ -96,14 +96,14 @@ stop_apt_proxy() {
 # Function to configure apt to use the proxy
 configure_apt_proxy() {
     if [[ -z "$APT_PROXY_PORT" ]]; then
-        printf "\033[1;31mERROR:  \033[0;31m apt proxy port not set.\033[0m\n"
+        _dotfiles_log_info "apt proxy port not set."
         return 1
     fi
 
     # Create apt proxy configuration
     local proxy_conf="/etc/apt/apt.conf.d/01-auth-proxy"
 
-    printf "\033[1;32mINFO:   \033[0;32m Configuring apt to use authentication proxy...\033[0m\n"
+    _dotfiles_log_info "Configuring apt to use authentication proxy..."
     sudo tee "$proxy_conf" > /dev/null << EOF
 Acquire::http::Proxy "http://127.0.0.1:$APT_PROXY_PORT";
 Acquire::https::Proxy "DIRECT";
@@ -112,7 +112,7 @@ Acquire::https::alianza.jfrog.io "http://TLSUPGRADE/alianza.jfrog.io";
 
 EOF
 
-    printf "\033[1;32mINFO:   \033[0;32m apt configured to use proxy on port ${APT_PROXY_PORT}.\033[0m\n"
+    _dotfiles_log_info "apt configured to use proxy on port ${APT_PROXY_PORT}."
 }
 
 # Function to remove apt proxy configuration
@@ -120,7 +120,7 @@ remove_apt_proxy_config() {
     local proxy_conf="/etc/apt/apt.conf.d/01-auth-proxy"
     if [[ -f "$proxy_conf" ]]; then
         sudo rm -f "$proxy_conf"
-	printf "\033[1;32mINFO:   \033[0;32m Removed apt proxy configuration.\033[0m\n"
+        _dotfiles_log_info "Removed apt proxy configuration."
     fi
 }
 
@@ -140,7 +140,7 @@ set_repository_auth() {
     local password="${(P)password_env_var}"
 
     if [[ -z "$password" ]]; then
-        printf "\033[1;31mERROR:  \033[0;31m Environment variable ${password_env_var} is not set (or is empty).\033[0m\n"
+        _dotfiles_log_info "Environment variable ${password_env_var} is not set (or is empty)."
         return 1
     fi
 
@@ -149,7 +149,7 @@ set_repository_auth() {
     export "REPO_AUTH_${hostname_env}_USER=$username"
     export "REPO_AUTH_${hostname_env}_PASS=$password"
 
-    printf "\033[1;32mINFO:   \033[0;32m Set authentication for ${hostname} (user: ${username}).\033[0m\n"
+    _dotfiles_log_info "Set authentication for ${hostname} (user: ${username})."
 }
 
 # Function to set generic repository authentication
@@ -165,14 +165,14 @@ set_generic_repository_auth() {
     local password="${(P)password_env_var}"
 
     if [[ -z "$password" ]]; then
-        printf "\033[1;31mERROR:  \033[0;31m Environment variable ${password_env_var} is not set (or is empty).\033[0m\n"
+        _dotfiles_log_info "Environment variable ${password_env_var} is not set (or is empty)."
         return 1
     fi
 
     export REPO_USER="$username"
     export REPO_PASSWORD="$password"
 
-    printf "\033[1;32mINFO:   \033[0;32m Set generic authentication (user: ${username}).\033[0m\n"
+    _dotfiles_log_info "Set generic authentication (user: ${username})."
 }
 
 # Function to manage apt with authentication
